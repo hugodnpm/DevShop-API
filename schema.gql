@@ -1,0 +1,85 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Brand {
+  id: String
+  name: String
+  slug: String
+}
+
+type Category {
+  id: String
+  name: String
+  slug: String
+}
+
+type Product {
+  id: String
+  name: String
+  slug: String
+  description: String
+  category: String
+}
+
+type Query {
+  getAllCategories: [Category!]!
+  getCategoryById(id: String!): Category!
+  getCategoryBySlug(slug: String!): Category!
+  getAllProducts: [Product!]!
+  getProductById(id: String!): Product!
+  getProductBySlug(slug: String!): Product!
+  getAllBrand: [Brand!]!
+  getBrandById(id: String!): Brand!
+  getBrandBySlug(slug: String!): Brand!
+}
+
+type Mutation {
+  createCategory(input: CategoryCreateInput!): Category!
+  updateCategory(input: CategoryUpdateInput!): Category!
+  deleteCategory(id: String!): Boolean!
+  createProduct(input: ProductCreateInput!): Product!
+  updateProduct(input: ProductUpdateInput!): Product!
+  deleteProduct(id: String!): Boolean!
+  createBrand(input: BrandCreateInput!): Brand!
+  uploadBrandLogo(input: String!): Brand!
+  updateBrand(input: BrandUpdateInput!): Brand!
+  deleteBrand(id: String!): Boolean!
+}
+
+input CategoryCreateInput {
+  name: String!
+  slug: String!
+}
+
+input CategoryUpdateInput {
+  id: String!
+  name: String!
+  slug: String!
+}
+
+input ProductCreateInput {
+  name: String!
+  slug: String!
+  description: String!
+  category: String!
+}
+
+input ProductUpdateInput {
+  id: String!
+  name: String!
+  slug: String!
+  description: String!
+  category: String!
+}
+
+input BrandCreateInput {
+  name: String!
+  slug: String!
+}
+
+input BrandUpdateInput {
+  id: String!
+  name: String!
+  slug: String!
+}
