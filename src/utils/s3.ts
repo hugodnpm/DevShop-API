@@ -6,13 +6,12 @@ export class S3{
     constructor(){
         //crendentials, 
         aws.config.update({
-            region: '',
+            region: 'us-east-2',
             accessKeyId: '',
             secretAccessKey: ''
         })       
     }
-    async upload(filename: string, stream: any, minetype: string, bucket: string, destinationFilename: string): Promise<string>{
-        console.log(filename)
+    async upload(filename: string, stream: NodeJS.ReadStream, minetype: string, bucket: string, destinationFilename: string): Promise<string>{       
         const s3 = new aws.S3()
         const s3Params = {
             Bucket: bucket,

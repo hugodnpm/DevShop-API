@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common'
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { GraphQLModule } from '@nestjs/graphql'
 import { TypeOrmModule } from '@nestjs/typeorm'
@@ -7,6 +7,7 @@ import { AppService } from './app.service'
 import { BrandModule } from './brand/brand.module'
 import { CategoryModule } from './category/category.module'
 import { ProductModule } from './product/product.module'
+import {graphqlUploadExpress} from "graphql-upload"
 
 @Module({
   imports: [
@@ -31,13 +32,19 @@ import { ProductModule } from './product/product.module'
       logging: true
     }),*/
     GraphQLModule.forRoot({
+      uploads: false,
       autoSchemaFile: 'schema.gql'
     }),
     CategoryModule,
     ProductModule,
     BrandModule
   ],
+
   controllers: [AppController],
   providers: [AppService]
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer){
+    consumer.apply(graphqlUploadExpress()).forRoutes('graphql')
+  }
+}

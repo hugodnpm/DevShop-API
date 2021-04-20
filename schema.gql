@@ -42,7 +42,7 @@ type Mutation {
   updateProduct(input: ProductUpdateInput!): Product!
   deleteProduct(id: String!): Boolean!
   createBrand(input: BrandCreateInput!): Brand!
-  uploadBrandLogo(input: String!): Brand!
+  uploadBrandLogo(file: Upload!, id: String!): Boolean!
   updateBrand(input: BrandUpdateInput!): Brand!
   deleteBrand(id: String!): Boolean!
 }
@@ -77,6 +77,9 @@ input BrandCreateInput {
   name: String!
   slug: String!
 }
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
 
 input BrandUpdateInput {
   id: String!
