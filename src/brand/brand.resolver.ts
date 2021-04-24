@@ -32,17 +32,15 @@ export class BrandResolver {
     return this.brandService.create(BrandMapper.toEntity(input))
   }
   @Mutation(returns => Boolean, { name: 'uploadBrandLogo' })
-  async uploadBrandLogo(
+  async uploadLogo(
     @Args('id') id: string,
-    @Args('file', {type: () => GraphQLUpload})
+    @Args('file', {type: () => GraphQLUpload })
     file: FileUpload
   ): Promise<boolean> {
     const {createReadStream, filename, mimetype} = await file
-    await this.brandService.uploadLogo(id, createReadStream, filename, mimetype )// 
+    await this.brandService.uploadLogo(id, createReadStream, filename, mimetype)
     return true
-     
   }
-
 
 
   @Mutation(returns => BrandPublic, { name: 'updateBrand' })
@@ -57,3 +55,19 @@ export class BrandResolver {
     return this.brandService.delete(input)
   }
 }
+
+
+
+/*
+  @Mutation(returns => Boolean, { name: 'uploadBrandLogo' })
+  async uploadBrandLogo(
+    @Args('id') id: string,
+    @Args('file', {type: () => GraphQLUpload})
+    file: FileUpload
+  ): Promise<boolean> {
+    const {createReadStream, filename, mimetype} = await file
+    await this.brandService.uploadLogo(id, createReadStream, filename, mimetype )// 
+    return true
+     
+  }
+*/
