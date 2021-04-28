@@ -38,8 +38,15 @@ export class BrandResolver {
     file: FileUpload
   ): Promise<boolean> {
     const {createReadStream, filename, mimetype} = await file
-    await this.brandService.uploadLogo(id, createReadStream, filename, mimetype)
-    return true
+    return await this.brandService.uploadLogo(id, createReadStream, filename, mimetype)
+     
+  }
+  @Mutation(returns => Boolean, { name: 'removeBrandLogo' })
+  async removeLogo(
+    @Args('id') id: string
+  ): Promise<boolean> {    
+    return await this.brandService.removeBrandLogo(id)
+     
   }
 
 
@@ -47,7 +54,7 @@ export class BrandResolver {
   async updateBrand(
     @Args('input') input: BrandUpdateInput
   ): Promise<BrandPublic> {
-    return this.brandService.update(input)
+    return BrandMapper.fromEntityToPublic(await this.brandService.update(BrandMapper.toEntity(input)))
   }
 
   @Mutation(returns => Boolean, { name: 'deleteBrand' })

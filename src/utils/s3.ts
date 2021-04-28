@@ -7,13 +7,12 @@ export class S3{
     constructor(){
         //crendentials
         aws.config.update({
-            region: 'region',
-            accessKeyId: 'accessKeyId',
-            secretAccessKey: 'secretAccessKey'
+            region: 'us-east-1',
+            
         })     
     }
-    async upload(filename: string,stream: any, mimetype: string, bucket: string, destinationFilename:string): Promise<string>{
-        console.log(filename)
+    async upload(stream: NodeJS.ReadStream, mimetype: string, bucket: string, destinationFilename:string): Promise<string>{
+        
         const s3 = new aws.S3()
         const s3Params = {
             Bucket: bucket,
@@ -26,7 +25,19 @@ export class S3{
         return Location
 
     }
-
+    async deleteObject(bucket: string, destinationFilename: string): Promise<boolean>{
+        const s3 = new aws.S3()
+        const s3Params = {
+            Bucket: bucket,
+            Key: destinationFilename            
+        }
+        try{
+            await s3.deleteObject(s3Params).promise()
+            return true
+        }catch(err){
+            return false
+        }
+    }
 }
 
 

@@ -6,6 +6,7 @@ type Brand {
   id: String
   name: String
   slug: String
+  logo: String
 }
 
 type Category {
@@ -43,6 +44,7 @@ type Mutation {
   deleteProduct(id: String!): Boolean!
   createBrand(input: BrandCreateInput!): Brand!
   uploadBrandLogo(file: Upload!, id: String!): Boolean!
+  removeBrandLogo(id: String!): Boolean!
   updateBrand(input: BrandUpdateInput!): Brand!
   deleteBrand(id: String!): Boolean!
 }

@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { S3 } from 'src/utils/s3'
-import { Stream } from 'stream'
 import { Repository } from 'typeorm'
 import { Brand } from './brand.entity'
-import * as fs from 'fs'
+import * as sharp from 'sharp'
 
 
 
@@ -28,10 +27,31 @@ export class BrandService {
     return this.brandRepository.save(input)
   }
 
-  async uploadLogo(id: string, createReadStream: () => any, filename: string, mimetype: string): Promise<Brand>{
-    const stream = createReadStream()
-    await this.s3.upload(filename, stream, mimetype, 'bucket', id+'-'+filename)
-    return null
+  async uploadLogo(id: string, createReadStream: () => any, filename: string, mimetype: string): Promise<boolean>{
+    const brand = await this.brandRepository.findOne(id)
+    if(!brand){
+      return false
+    }
+    if(brand.logo){
+      const filename = brand.logo.split('.com/')[1]
+    await this.s3.deleteObject('hugo-devshop', filename)
+    }
+    const stream = createReadStream().pipe(sharp().resize(300))
+    const url = await this.s3.upload(stream, mimetype, 'hugo-devshop', id+'-'+filename)
+    await this.brandRepository.update(id, {
+      logo:url
+    })
+    return true
+  }
+
+  async removeBrandLogo(id: string): Promise<boolean>{
+    const brand = await this.brandRepository.findOne(id)
+    const filename = brand.logo.split('.com/')[1]
+    await this.s3.deleteObject('hugo-devshop', filename)
+    await this.brandRepository.update(brand.id, {
+      logo: null
+    })
+    return true
   }
   
   async update(input: Brand): Promise<Brand> {
@@ -43,6 +63,14 @@ export class BrandService {
   }
   async delete(id: string): Promise<boolean> {
     try {
+      const brand = await this.brandRepository.findOne(id)
+    if(!brand){
+      return false
+    }
+    if(brand.logo){
+      const filename = brand.logo.split('.com/')[1]
+    await this.s3.deleteObject('hugo-devshop', filename)
+    }
       await this.brandRepository.delete(id)
       return true
     } catch (err) {
