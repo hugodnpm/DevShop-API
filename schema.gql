@@ -104,6 +104,7 @@ input BrandUpdateInput {
 input UserCreateInput {
   name: String!
   email: String!
+  passwd: String!
   role: String!
 }
 
@@ -111,5 +112,6 @@ input UserUpdateInput {
   id: String!
   name: String!
   email: String!
+  passwd: String!
   role: String!
 }

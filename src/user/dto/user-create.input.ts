@@ -15,5 +15,9 @@ export class UserCreateInput {
 
   @Field()
   @Length(3)
+  passwd: string
+
+  @Field()
+  @Length(3)
   role: string
 }
