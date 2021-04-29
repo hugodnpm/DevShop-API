@@ -8,6 +8,7 @@ import { BrandModule } from './brand/brand.module'
 import { CategoryModule } from './category/category.module'
 import { ProductModule } from './product/product.module'
 import {graphqlUploadExpress} from "graphql-upload"
+import { UserModule } from './user/user.module'
 
 @Module({
   imports: [
@@ -37,7 +38,8 @@ import {graphqlUploadExpress} from "graphql-upload"
     }),
     CategoryModule,
     ProductModule,
-    BrandModule
+    BrandModule,
+    UserModule
   ],
 
   controllers: [AppController],

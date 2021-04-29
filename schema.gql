@@ -23,6 +23,13 @@ type Product {
   category: String
 }
 
+type User {
+  id: String
+  name: String
+  email: String
+  role: String
+}
+
 type Query {
   getAllCategories: [Category!]!
   getCategoryById(id: String!): Category!
@@ -33,6 +40,8 @@ type Query {
   getAllBrand: [Brand!]!
   getBrandById(id: String!): Brand!
   getBrandBySlug(slug: String!): Brand!
+  getAllUsers: [User!]!
+  getUserById(id: String!): User!
 }
 
 type Mutation {
@@ -47,6 +56,9 @@ type Mutation {
   removeBrandLogo(id: String!): Boolean!
   updateBrand(input: BrandUpdateInput!): Brand!
   deleteBrand(id: String!): Boolean!
+  createUser(input: UserCreateInput!): User!
+  updateUser(input: UserUpdateInput!): User!
+  deleteUser(id: String!): Boolean!
 }
 
 input CategoryCreateInput {
@@ -87,4 +99,17 @@ input BrandUpdateInput {
   id: String!
   name: String!
   slug: String!
+}
+
+input UserCreateInput {
+  name: String!
+  email: String!
+  role: String!
+}
+
+input UserUpdateInput {
+  id: String!
+  name: String!
+  email: String!
+  role: String!
 }
