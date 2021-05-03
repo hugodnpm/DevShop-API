@@ -4,10 +4,15 @@ import { UserService } from './user.service'
 import { UserPublic } from './dto/user'
 import { UserCreateInput } from './dto/user-create.input'
 import { UserUpdateInput } from './dto/user-update.input'
+import { AuthToken } from './dto/auth'
+import { JwtService } from '@nestjs/jwt'
 
 @Resolver(of => UserPublic)
 export class UserResolver {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly jwtService: JwtService
+    ) {}
 
   @Query(returns => [UserPublic], { name: 'getAllUsers' })
   async getAllUsers(): Promise<UserPublic[]> {
@@ -36,5 +41,19 @@ export class UserResolver {
   @Mutation(returns => Boolean, { name: 'deleteUser' })
   async deleteUser(@Args('id') input: string): Promise<boolean> {
     return this.userService.delete(input)
+  }
+
+  @Mutation(returns => AuthToken, { name: 'auth' })
+  async auth(@Args('id') input: string): Promise<AuthToken> {
+    const authToken = new AuthToken()
+    authToken.refreshToken = this.jwtService.sign({
+      scope: 'refreshToken',
+      id: '<id>'
+    })
+    authToken.accessToken = this.jwtService.sign({
+      scope: 'accessToken',
+      id: '<id>'
+    })
+    return authToken
   }
 }

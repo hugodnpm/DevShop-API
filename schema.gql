@@ -30,6 +30,11 @@ type User {
   role: String
 }
 
+type AuthToken {
+  refreshToken: String!
+  accessToken: String!
+}
+
 type Query {
   getAllCategories: [Category!]!
   getCategoryById(id: String!): Category!
@@ -59,6 +64,7 @@ type Mutation {
   createUser(input: UserCreateInput!): User!
   updateUser(input: UserUpdateInput!): User!
   deleteUser(id: String!): Boolean!
+  auth(id: String!): AuthToken!
 }
 
 input CategoryCreateInput {
