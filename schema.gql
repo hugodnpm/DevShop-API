@@ -64,7 +64,7 @@ type Mutation {
   createUser(input: UserCreateInput!): User!
   updateUser(input: UserUpdateInput!): User!
   deleteUser(id: String!): Boolean!
-  auth(id: String!): AuthToken!
+  auth(input: AuthUserInput!): AuthToken!
 }
 
 input CategoryCreateInput {
@@ -120,4 +120,9 @@ input UserUpdateInput {
   email: String!
   passwd: String!
   role: String!
+}
+
+input AuthUserInput {
+  email: String!
+  passwd: String!
 }

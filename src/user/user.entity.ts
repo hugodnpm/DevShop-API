@@ -1,5 +1,6 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
-import * as bycript from 'bcrypt'
+import { BeforeInsert, BeforeUpdate, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import * as bcrypt from 'bcrypt'
+import { AuthToken } from './authtoken.entity'
 
 @Entity()
 export class User {
@@ -27,11 +28,14 @@ export class User {
   @Column({ type: 'timestamp'})
   updateAt: Date
 
+  @OneToMany(() => AuthToken, authToken => authToken.user)
+  authTokens: AuthToken[]
+
   @BeforeInsert()
   @BeforeUpdate()
   async hashPassword(): Promise<void>{
     if(this.passwd){
-      this.passwd = await bycript.hash(this.passwd, 10)
+      this.passwd = await bcrypt.hash(this.passwd, 10)
     }
   }
 
@@ -43,5 +47,10 @@ export class User {
   @BeforeUpdate()
   setUpdateDate(): void {
     this.updateAt = new Date()
+  }
+
+  async checkPassword(passwd: string): Promise<boolean>{
+    
+     return bcrypt.compare(passwd, this.passwd)
   }
 }
