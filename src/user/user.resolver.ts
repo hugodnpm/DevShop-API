@@ -66,4 +66,24 @@ export class UserResolver {
     return null
     
   }
+
+  @Mutation(returns => String, { name: 'accessToken' })
+  async accessToken(@Args('refreshToken') refreshToken: string): Promise<string> {
+    const decoded = this.jwtService.verify(refreshToken)
+    if(decoded && decoded.scope.indexOf('refreshToken') >= 0){
+      const authToken = await this.userService.getRefreshToken(decoded.id)
+      const accessToken = this.jwtService.sign(
+        {
+          scope: ['accessToken', authToken.user.role],
+          id: authToken.user.id
+        }, {
+          expiresIn: '1 hour'
+        }
+        )
+        return accessToken
+      
+    }
+    return null 
+  }
+
 }

@@ -37,6 +37,11 @@ export class UserService {
     
     return null
   }
+  async getRefreshToken(id:string): Promise<AuthToken>{
+    return this.authTokenRepository.findOne(id, {relations: ['user']})
+  }
+
+
   async update(input: User): Promise<User> {
     const entity = await this.userRepository.findOne(input.id)
     entity.name = input.name
