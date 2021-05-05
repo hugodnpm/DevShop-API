@@ -47,6 +47,7 @@ type Query {
   getBrandBySlug(slug: String!): Brand!
   getAllUsers: [User!]!
   getUserById(id: String!): User!
+  getMe: User!
 }
 
 type Mutation {
