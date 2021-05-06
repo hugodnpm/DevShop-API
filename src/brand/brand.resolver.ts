@@ -5,12 +5,15 @@ import { BrandPublic } from './dto/brand'
 import { BrandCreateInput } from './dto/brand-create.input'
 import { BrandUpdateInput } from './dto/brand-update.input'
 import {GraphQLUpload, FileUpload} from 'graphql-upload'
+import { UseGuards } from '@nestjs/common'
+import { AuthGuard } from 'src/utils/jwt-auth.guard'
 
 
 @Resolver(of => BrandPublic)
 export class BrandResolver {
   constructor(private readonly brandService: BrandService) {}
 
+  @UseGuards(AuthGuard)
   @Query(returns => [BrandPublic], { name: 'getAllBrand' })
   async getAllBrand(): Promise<BrandPublic[]> {
     return this.brandService.findAll()

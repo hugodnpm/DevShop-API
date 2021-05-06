@@ -9,6 +9,7 @@ import { CategoryModule } from './category/category.module'
 import { ProductModule } from './product/product.module'
 import {graphqlUploadExpress} from "graphql-upload"
 import { UserModule } from './user/user.module'
+import { CoreModule } from './core/core.module'
 
 @Module({
   imports: [
@@ -24,6 +25,12 @@ import { UserModule } from './user/user.module'
         logging: true
       })
     }),
+    CoreModule,
+
+
+
+
+
     /*TypeOrmModule.forRoot({
       type: 'postgres',
       url: 

@@ -35,7 +35,7 @@ export class UserService {
       return [user, token]
     }
     
-    return null
+    return [null, null]
   }
   async getRefreshToken(id:string): Promise<AuthToken>{
     return this.authTokenRepository.findOne(id, {relations: ['user']})
